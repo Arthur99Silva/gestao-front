@@ -1,4 +1,3 @@
-// src/app/customers/customer-form/customer-form.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -12,7 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ApiService } from '../../services/api.service';
+import { ApiService, Customer } from '../../services/api.service';
 
 @Component({
   standalone: true,
@@ -56,13 +55,21 @@ export class CustomerFormComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.form.invalid) return;
-    const action = this.isEdit
+    console.log('onSubmit chamado:', this.form.value);
+    if (this.form.invalid) {
+      console.warn('Form inválido', this.form.errors);
+      return;
+    }
+    const obs = this.isEdit
       ? this.api.updateCustomer(this.id!, this.form.value)
       : this.api.createCustomer(this.form.value);
-    action.subscribe({
-      next: () => this.router.navigate(['/clientes']),
-      error: err => console.error(err)
+
+    obs.subscribe({
+      next: (cliente: Customer) => {
+        console.log('Cliente salvo com sucesso', cliente);
+        this.router.navigate(['/clientes']);
+      },
+      error: err => console.error('Erro ao salvar cliente:', err)
     });
   }
 }

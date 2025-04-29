@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     if (this.loginForm.invalid) return;
     this.api.login(this.loginForm.value).subscribe({
-      next: () => this.router.navigate(['/clientes']),
+      next: () => this.router.navigate(['/home']),
       error: (err: HttpErrorResponse) => {
         console.error('Erro no login:', err.message);
       }

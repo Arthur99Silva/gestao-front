@@ -1,4 +1,3 @@
-// src/app/companies/company-form/company-form.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -12,7 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ApiService } from '../../services/api.service';
+import { ApiService, Company } from '../../services/api.service';
 
 @Component({
   standalone: true,
@@ -55,13 +54,21 @@ export class CompanyFormComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.form.invalid) return;
-    const action = this.isEdit
+    console.log('onSubmit company:', this.form.value);
+    if (this.form.invalid) {
+      console.warn('Form inválido', this.form.errors);
+      return;
+    }
+    const obs = this.isEdit
       ? this.api.updateCompany(this.id!, this.form.value)
       : this.api.createCompany(this.form.value);
-    action.subscribe({
-      next: () => this.router.navigate(['/empresas']),
-      error: err => console.error(err)
+
+    obs.subscribe({
+      next: (empresa: Company) => {
+        console.log('Empresa salva com sucesso', empresa);
+        this.router.navigate(['/empresas']);
+      },
+      error: err => console.error('Erro ao salvar empresa:', err)
     });
   }
 }
