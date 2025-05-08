@@ -21,6 +21,12 @@ export interface Company {
   name: string;
 }
 
+export interface Employee {
+  id: string;
+  name: string;
+  email: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -78,5 +84,25 @@ export class ApiService {
 
   deleteCompany(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/companies/${id}`);
+  }
+
+  getEmployees(): Observable<Employee[]> {
+    return this.http.get<Employee[]>(`${this.baseUrl}/employees`);
+  }
+  
+  getEmployee(id: string): Observable<Employee> {
+    return this.http.get<Employee>(`${this.baseUrl}/employees/${id}`);
+  }
+  
+  createEmployee(emp: Omit<Employee,'id'>): Observable<Employee> {
+    return this.http.post<Employee>(`${this.baseUrl}/employees`, emp);
+  }
+  
+  updateEmployee(id: string, emp: Partial<Omit<Employee,'id'>>): Observable<Employee> {
+    return this.http.put<Employee>(`${this.baseUrl}/employees/${id}`, emp);
+  }
+  
+  deleteEmployee(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/employees/${id}`);
   }
 }

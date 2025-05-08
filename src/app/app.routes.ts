@@ -3,7 +3,7 @@ import type { Routes } from '@angular/router';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login',  loadComponent: () => import('./auth/login/login.component').then(m => m.LoginComponent) },
+  { path: 'login', loadComponent: () => import('./auth/login/login.component').then(m => m.LoginComponent) },
   { path: 'register', loadComponent: () => import('./auth/register-user/register-user.component').then(m => m.RegisterUserComponent) },
 
   // rota para Home
@@ -16,6 +16,20 @@ export const routes: Routes = [
   // Empresas
   { path: 'empresas', loadComponent: () => import('./companies/company-list/company-list.component').then(m => m.CompanyListComponent) },
   { path: 'empresas/new', loadComponent: () => import('./companies/company-form/company-form.component').then(m => m.CompanyFormComponent) },
+
+  // Funcionários
+  {
+    path: 'employees',
+    loadComponent: () => import('./employees/employee-list/employee-list.component').then(m => m.EmployeeListComponent)
+  },
+  {
+    path: 'employees/new',
+    loadComponent: () => import('./employees/employee-form/employee-form.component').then(m => m.EmployeeFormComponent)
+  },
+  {
+    path: 'employees/:id',
+    loadComponent: () => import('./employees/employee-form/employee-form.component').then(m => m.EmployeeFormComponent)
+  },
 
   { path: '**', redirectTo: 'login', pathMatch: 'full' }
 ];
